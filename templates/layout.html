@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+{% load static %}
+{% load tags %}
+<html lang="en">
+<head>
+    <title>BLOG POST</title>
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&display=swap" rel="stylesheet">
+
+	<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
+
+    <link href="{% static 'sweetalert2/sweetalert2.min.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'datatables/datatables.min.css' %}" rel="stylesheet" type="text/css" />
+	<link href="{% static 'css/sidebars.css' %}" rel="stylesheet">
+	<link href="{% static 'css/style.css' %}" rel="stylesheet">
+</head>
+<body>
+<main class="d-flex flex-nowrap">
+	<div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 280px; height:100vh;">
+		<a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+			<img src="#" width="80%">
+		</a>
+		<hr>
+		<ul class="nav nav-pills flex-column mb-auto">
+			<li class="nav-item">
+				<a href="{% url 'dashboard' %}" class="nav-link {% if li == 'dashboard' %}active{% else %}text-white{% endif %}" aria-current="page">
+					<i class="fas fa-home bi pe-none me-2" width="16" height="16"></i>
+					Dashboard
+				</a>
+			</li>
+			<li class="nav-item">
+				<a href="{% url 'blogs' %}" class="nav-link {% if li == 'blogs' %}active{% else %}text-white{% endif %}" aria-current="page">
+					<i class="fas fa-blog bi pe-none me-2" width="16" height="16"></i>
+					Blog Post
+				</a>
+			</li>
+		</ul>
+		<hr>
+		<div class="dropdown">
+			<a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+				<img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+				<strong>Account</strong>
+			</a>
+			<ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+				<li>
+					<a class="dropdown-item logout" href="#">Sign out</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="container-fluid h-100 overflow-auto p-5">
+		{% block content %}{% endblock %}
+	</div>
+</main>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+	<script src="{% static 'js/sidebars.js' %}"></script>
+    <!-- Libraries -->
+    <script src="{% static 'sweetalert2/sweetalert2.min.js' %}"></script>
+    <script src="{% static 'datatables/datatables.min.js' %}"></script>
+	<script type="text/javascript">
+    	$('.logout').click(function () {
+			Swal.fire({
+				title: "Are you sure",
+				text: "You want to Sign Out?",
+				icon: "info",
+				showCancelButton: true,
+				confirmButtonText: "Yes, I will!",
+				cancelButtonText: "No, cancel!",
+				reverseButtons: true
+			}).then((result) => {
+			  if (result.value) {
+				Swal.fire({
+						title: "Information",
+						html: "You successfully logout your account !",
+						icon: "success",
+						confirmButtonColor: "#3498DB",
+						allowOutsideClick: false,
+					}).then((result) => {
+						if(result.isConfirmed){
+							window.location = '{% url "logout_user" %}';
+						}
+					});
+			  }
+			})
+		});
+    </script>
+    {% block script %}{% endblock %}
+</body>
+</html>
