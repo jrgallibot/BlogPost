@@ -1,6 +1,14 @@
 Good day sir
 
-*Login Credentials
+To View the post
+http://127.0.0.1:8000/dashboard/
 
+To Login
+http://127.0.0.1:8000/login/
+
+*Login Credentials
 User: ffgallibot
 pw: admin1234
+
+
+FYI: I attached the database named blogpost.sql

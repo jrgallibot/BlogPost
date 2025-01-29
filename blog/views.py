@@ -11,7 +11,7 @@ from .models import BlogPost
 # Create your views here.
 def login_user(request):
     if request.user.is_authenticated:
-        return redirect('landing')
+        return redirect('dashboard')
     if request.method == "POST":
         user = authenticate(username=request.POST.get('username'), password=request.POST.get('password'))
         if user is not None and user.is_active:
@@ -32,8 +32,6 @@ def logout_user(request):
         logout(request)
         return redirect('login_user')
     
-
-@login_required
 def dashboard(request):
     blog_posts = BlogPost.objects.all().order_by('-published_date')
     context = {

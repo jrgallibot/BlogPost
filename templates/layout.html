@@ -36,12 +36,14 @@
 					Dashboard
 				</a>
 			</li>
+			{% if user.is_authenticated %}
 			<li class="nav-item">
 				<a href="{% url 'blogs' %}" class="nav-link {% if li == 'blogs' %}active{% else %}text-white{% endif %}" aria-current="page">
 					<i class="fas fa-blog bi pe-none me-2" width="16" height="16"></i>
 					Blog Post
 				</a>
 			</li>
+			{% endif %}
 		</ul>
 		<hr>
 		<div class="dropdown">

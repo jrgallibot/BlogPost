@@ -15,29 +15,6 @@ class BlogPostView(generics.ListAPIView):
     serializer_class = BlogPostSerializer
     permission_classes = [IsAuthenticated]
 
-# View to delete a blog post
-class BlogPostDeleteView(generics.DestroyAPIView):
-    queryset = BlogPost.objects.all()
-    serializer_class = BlogPostSerializer
-    permission_classes = [IsAuthenticated]
-
-    def delete(self, request, *args, **kwargs):
-        blog_post = self.get_object()
-
-        if blog_post.author != request.user:
-            return Response({"data": "error", "msg": "You do not have permission to delete this blog post."},
-                            status=status.HTTP_403_FORBIDDEN)
-
-        # Delete all comments related to the blog post
-        CommentPost.objects.filter(post=blog_post).delete()
-
-        try:
-            response = super().delete(request, *args, **kwargs)
-            return Response({"data": "success", "msg": "Blog post and related comments deleted successfully."}, 
-                             status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response({"data": "error", "msg": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
 # View to create a new blog post
 class BlogPostCreateView(generics.CreateAPIView):
     queryset = BlogPost.objects.all()
