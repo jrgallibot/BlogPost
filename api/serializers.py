@@ -4,7 +4,7 @@ from blog.models import BlogPost, CommentPost
 
 class BlogPostSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
-    author = serializers.CharField(source='author.get_fullname_formatted', read_only=True)
+    author = serializers.CharField(source='author.first_name', read_only=True)
     published_date = serializers.DateTimeField(format="%b %d, %Y - %H:%M %p", read_only=True)
 
     class Meta:

@@ -108,7 +108,7 @@
 	            'url': '/api/blog-posts/?format=datatables',
 	            'type': 'GET',
 	            'beforeSend': function (request) {
-	                request.setRequestHeader("Authorization", "Token d62fd3a9a4773f47aa133dfd6611eb8fcf083cdf")
+	                request.setRequestHeader("Authorization", "Token 6992c716d3bf2cc9c0f3e0dd61e56c8be7ef1be3")
 	            }
 	        },
 	        'fnCreatedRow': function (row, data, index) {
@@ -172,7 +172,7 @@
                         contentType: false,
                         processData: false,
                         beforeSend: function (request) {
-                            request.setRequestHeader("Authorization", "Token 5d284bb6a317895be2243ff98f49acddbc828d0a");
+                            request.setRequestHeader("Authorization", "Token 6992c716d3bf2cc9c0f3e0dd61e56c8be7ef1be3");
                         },
                         success: function (response) {
                             if (response.data === "success") {

@@ -11,9 +11,21 @@ from django.urls import reverse
 
 # View to list all blog posts
 class BlogPostView(generics.ListAPIView):
-    queryset = BlogPost.objects.all().order_by('-id')
     serializer_class = BlogPostSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        queryset = BlogPost.objects.all()
+        title = self.request.query_params.get('title')
+        author_name = self.request.query_params.get('author_name')
+
+        if title:
+            queryset = queryset.filter(title__icontains=title)
+        if author_name:
+            queryset = queryset.filter(author__username=author_name)
+
+        return queryset.order_by('-id')
+
 
 # View to create a new blog post
 class BlogPostCreateView(generics.CreateAPIView):
@@ -22,12 +34,19 @@ class BlogPostCreateView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        serializer.save(author_id=self.request.user.id)
+        serializer.save(author=self.request.user)
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        title = self.request.query_params.get('title', None)
+        if title:
+            queryset = queryset.filter(title__icontains=title)
+        return queryset.order_by('title') 
+    
     def create(self, request, *args, **kwargs):
         if not request.user.has_perm('blog.add_blogpost'):
             return Response({"data": "error", "msg": "You do not have permission to create a blog post."}, status=status.HTTP_403_FORBIDDEN)
-        
+
         title = request.data.get('title')
         if BlogPost.objects.filter(title=title).exists():
             return Response({"data": "error", "msg": "A blog post with this title already exists."}, status=status.HTTP_400_BAD_REQUEST)
@@ -37,6 +56,7 @@ class BlogPostCreateView(generics.CreateAPIView):
             return Response({"data": "success", "msg": "Blog post created successfully."}, status=status.HTTP_201_CREATED)
         except Exception as e:
             return Response({"data": "error", "msg": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        
         
 class BlogPostDetailView(DetailView):
     model = BlogPost

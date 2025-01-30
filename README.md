@@ -3,6 +3,20 @@
 
 
 ## Getting started
+To View the post
+http://127.0.0.1:8000/dashboard/
+
+To Login
+http://127.0.0.1:8000/login/
+
+*Login Credentials
+User: ffgallibot
+pw: admin1234
+
+
+FYI: I attached the database named blogpost.sql
+
+To run the test: pytest blog/tests/test_blogpost_testing.py -v
 
 To make it easy for you to get started with GitLab, here's a list of recommended next steps.
 

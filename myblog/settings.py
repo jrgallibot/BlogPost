@@ -76,7 +76,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'myblog.wsgi.application'
 
-
+AUTH_USER_MODEL = 'blog.AuthUser'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -88,8 +88,8 @@ DATABASES = {
         'USER': 'root',
         'PASSWORD': '',
         'PORT': '3306',
-        'OPTIONS': {
-            'unix_socket': '/var/run/mysqld/mysqld.sock',
+        'TEST': {
+            'NAME': 'test_blogpost',  # Ensures a separate database for testing
         },
     },
 }
@@ -160,4 +160,53 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
+}
+
+log_dir = os.path.join(BASE_DIR, 'logs')
+if not os.path.exists(log_dir):
+    os.makedirs(log_dir)
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(log_dir, 'test.log'),
+            'formatter': 'verbose',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file', 'console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'django.test': {
+            'handlers': ['file', 'console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'blog.tests': {
+            'handlers': ['file', 'console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    },
 }
